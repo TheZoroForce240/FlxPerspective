@@ -22,6 +22,16 @@
 * Support for more 3D model formats?
 * Skeletal animation?
 
+## Installation
+* Run this command to install the haxelib
+```
+haxelib git flxperspective https://github.com/TheZoroForce240/FlxPerspective
+```
+* Add "flxperspective" to the project.xml
+```xml
+<haxelib name="flxperspective" />
+```
+
 ## Example usage
 
 FlxPerspectiveSprite
@@ -36,6 +46,9 @@ scene.add(spr);
 
 FlxPerspectiveStrip with a 3D Model
 ```haxe
+
+FlxG.cameras.reset(new FlxCameraPerspective()); //required for 3D models to look right
+
 var sphere = new FlxPerspectiveStrip(0, 600, 0);
 sphere.repeat = true;
 sphere.loadGraphic(FlxGraphic.fromClass(GraphicLogo));
