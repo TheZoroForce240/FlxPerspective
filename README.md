@@ -1,5 +1,5 @@
 # FlxPerspective
-3D Rendering in HaxeFlixel by using a modified Vertex shader to transform sprites and triangles into a 3D space.
+3D in HaxeFlixel by using a modified Vertex shader to transform sprites and triangles into a 3D space.
 ![](https://github.com/TheZoroForce240/FlxPerspective/blob/main/examples/loop.gif)
 
 ## Features
