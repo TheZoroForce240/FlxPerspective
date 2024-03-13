@@ -1,5 +1,6 @@
 # FlxPerspective
 3D in [HaxeFlixel](https://github.com/HaxeFlixel/flixel) by using a modified Vertex shader to transform sprites and triangles into a 3D space.
+
 ![](https://github.com/TheZoroForce240/FlxPerspective/blob/main/examples/loop.gif)
 
 ## Features
@@ -10,12 +11,12 @@
 ## Limitations
 * No depth testing right now! Sprites will need to be layered manually or will need to be added to a FlxScene3D that attempts to auto layer based on the camera position, its not perfect but its the only option right now.
 * Flixel's culling system needed to be turned off for this to work! Frustum culling will hopefully be implemented at some point in the future to fix this.
-* A few edited Flixel files are be needed to correctly render 3D models with FlxPerspectiveStrip, this is to enable triangle culling and disable the camera boundary check.
+* A few edited Flixel files are needed to correctly render 3D models with FlxPerspectiveStrip, this is to enable triangle culling and disable the camera boundary check.
 
 ## Planned Features (maybe)
 * Depth testing
 * 3D Rotation on sprites/models
-* Parenting system for multi-textured 3D models instead of separate pieces
+* Parenting system for multi-textured 3D models instead of separate FlxStrips
 * Frustum culling
 * Lighting? Normal/specular mapping maybe?
 * Support for more 3D model formats?
