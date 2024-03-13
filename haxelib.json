@@ -1,0 +1,12 @@
+{
+    "name": "flxperspective",
+    "url" : "https://github.com/TheZoroForce240/FlxPerspective",
+    "license": "MIT",
+    "tags": ["haxeflixel", "flixel", "3d"],
+    "description": "3D in HaxeFlixel",
+    "version": "0.1.0",
+    "classPath": "source/",
+    "releasenote": "",
+    "contributors": ["TheZoroForce240"],
+    "dependencies": {}
+}
