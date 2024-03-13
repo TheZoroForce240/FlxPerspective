@@ -188,9 +188,14 @@ class FlxPerspectiveSprite extends FlxSprite
 				// if (offsetBR[2] > maxZ) maxZ = offsetBR[2]; if (offsetBR[2] < minZ) minZ = offsetBR[2];
 
 				// var zHalfway = (0.0)*0.5;
-				_lastWorldCenterPos.setTo(x + (width * 0.5), y + (height * 0.5), z);
-				viewSpaceCenterPos = camera3D._viewMatrix.transformVector(_lastWorldCenterPos);
+				viewSpaceCenterPos = camera3D._viewMatrix.transformVector(getCenter3D());
 			}
 		}
+	}
+
+	public function getCenter3D()
+	{
+		_lastWorldCenterPos.setTo(x + (width * 0.5), y + (height * 0.5), z);
+		return _lastWorldCenterPos;
 	}
 }
