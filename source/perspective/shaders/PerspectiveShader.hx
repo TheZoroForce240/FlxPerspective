@@ -1,4 +1,4 @@
-package perspective;
+package perspective.shaders;
 
 import flixel.system.FlxAssets.FlxShader;
 

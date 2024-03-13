@@ -3,9 +3,9 @@ package perspective;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.math.FlxAngle;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import openfl.geom.Vector3D;
+import perspective.shaders.*;
 
 /**
  * An object capable of rendering an `FlxSprite` with 3D perspective projection.
