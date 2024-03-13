@@ -260,6 +260,9 @@ class Camera3D implements IFlxDestroyable
 		followDistance = 1;
 	}
 
+
+	//TODO: fix this to match correctly with flixel coordinates
+
 	function set_x(value:Float):Float
 	{
 		return eyePos.x = value * 0.001;

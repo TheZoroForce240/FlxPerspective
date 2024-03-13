@@ -1,5 +1,7 @@
 package perspective;
 
+import flixel.math.FlxRect;
+import openfl.display.TriangleCulling;
 import flixel.FlxG;
 import flixel.graphics.tile.FlxDrawTrianglesItem.DrawData;
 import flixel.system.FlxAssets.FlxGraphicAsset;
@@ -19,10 +21,16 @@ class FlxPerspectiveStrip extends FlxPerspectiveSprite
 	 */
 	public function addVertex(vert:StripVertex, flipX:Bool = false, flipY:Bool = false)
 	{
-		stripVertices.push(vert);
+		if (flipX)
+			vert.x = -vert.x;
+		if (flipY)
+			vert.y = -vert.y;
 
-		vertices.push(flipX ? -vert.x : vert.x);
-		vertices.push(flipY ? -vert.y : vert.y);
+		stripVertices.push(vert);
+		updateBounds(vert);
+
+		vertices.push(vert.x);
+		vertices.push(vert.y);
 		zVertices.push(vert.z);
 		uvtData.push(vert.uvX);
 		uvtData.push(vert.uvY);
@@ -34,6 +42,47 @@ class FlxPerspectiveStrip extends FlxPerspectiveSprite
 			addVertex(v, flipX, flipY);
 		for (i in modelData.indices)
 			indices.push(i);
+
+		alpha = modelData.mtl.alpha;
+	}
+
+	private var modelMinX:Float = 0;
+	private var modelMaxX:Float = 0;
+	private var modelMinY:Float = 0;
+	private var modelMaxY:Float = 0;
+	private var modelMinZ:Float = 0;
+	private var modelMaxZ:Float = 0;
+
+	public var modelCenterX:Float = 0;
+	public var modelCenterY:Float = 0;
+	public var modelCenterZ:Float = 0;
+
+	private function updateBounds(vert:StripVertex)
+	{
+		if (vert.x > modelMaxX)
+			modelMaxX = vert.x;
+		else if (-vert.x > modelMinX)
+			modelMinX = -vert.x;
+
+		if (vert.y > modelMaxY)
+			modelMaxY = vert.y;
+		else if (-vert.y > modelMinY)
+			modelMinY = -vert.y;
+
+		if (vert.z > modelMaxZ)
+			modelMaxZ = vert.z;
+		else if (-vert.z > modelMinZ)
+			modelMinZ = -vert.z;
+
+		modelCenterX = modelMaxX - modelMinX;
+		modelCenterY = modelMaxY - modelMinY;
+		modelCenterZ = modelMaxZ - modelMinZ;
+	}
+
+	override public function getCenter3D()
+	{
+		_lastWorldCenterPos.setTo(x, y, z); // most 3D models are centered at origin
+		return _lastWorldCenterPos;
 	}
 
 	/**
@@ -75,6 +124,8 @@ class FlxPerspectiveStrip extends FlxPerspectiveSprite
 		super.destroy();
 	}
 
+	private static var bounds = new FlxRect(-10000, -10000, 10000, 10000);
+
 	// TODO: check this for cases when zoom is less than initial zoom...
 	override public function draw():Void
 	{
@@ -89,8 +140,11 @@ class FlxPerspectiveStrip extends FlxPerspectiveSprite
 				continue;
 
 			getScreenPosition(_point, camera).subtractPoint(offset);
+
+			bounds.set(-10000, -10000, 20000, 20000); //only cut off if its REALLY far away
+
 			#if !flash
-			camera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, repeat, antialiasing, colorTransform, shader);
+			camera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, repeat, antialiasing, colorTransform, shader, TriangleCulling.POSITIVE, bounds);
 			#else
 			camera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, repeat, antialiasing);
 			#end

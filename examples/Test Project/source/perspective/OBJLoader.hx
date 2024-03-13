@@ -48,7 +48,6 @@ class OBJLoader
             if (l.startsWith("mtllib "))
             {
                 var mtlName = l.substring(7, l.length).trim();
-                trace(folderPath+mtlName);
                 if (Assets.exists(folderPath+mtlName))
                     mtlData = Assets.getText(folderPath+mtlName);
                 break; //should be near the top so wont loop for long

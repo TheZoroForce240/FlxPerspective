@@ -23,6 +23,10 @@ class PlayState extends FlxState
 
 		FlxSprite.defaultAntialiasing = true;
 
+		FlxPerspectiveSprite.globalCamera.cameraStyle = FOLLOW;
+
+		FlxPerspectiveSprite.globalCamera.lookAt.z = 0;
+
 		var wall = new FlxPerspectiveSprite(0, 0, 640);
 		wall.loadGraphic(FlxGradient.createGradientBitmapData(1, 720, [FlxColor.LIME, FlxColor.RED]));
 		wall.setGraphicSize(1280, 720);
@@ -36,48 +40,12 @@ class PlayState extends FlxState
 		floor.makeGraphic(100, 100, FlxColor.WHITE);
 		floor.pixels.fillRect(new Rectangle(0, 0, 50, 50), 0xFF000000); // make checkerboard
 		floor.pixels.fillRect(new Rectangle(50, 50, 50, 50), 0xFF000000);
-		floor.addVertex({
-			x: 0,
-			y: 0,
-			z: 640,
-			uvX: 0,
-			uvY: 0
-		});
-		floor.addVertex({
-			x: 1280,
-			y: 0,
-			z: 640,
-			uvX: 10,
-			uvY: 0
-		});
-		floor.addVertex({
-			x: 0,
-			y: 0,
-			z: -640,
-			uvX: 0,
-			uvY: 10
-		});
-		floor.addVertex({
-			x: 0,
-			y: 0,
-			z: -640,
-			uvX: 0,
-			uvY: 10
-		});
-		floor.addVertex({
-			x: 1280,
-			y: 0,
-			z: 640,
-			uvX: 10,
-			uvY: 0
-		});
-		floor.addVertex({
-			x: 1280,
-			y: 0,
-			z: -640,
-			uvX: 10,
-			uvY: 10
-		});
+		floor.addVertex({x: 0, y: 0, z: 640, uvX: 0, uvY: 0});
+		floor.addVertex({x: 1280, y: 0, z: 640, uvX: 10, uvY: 0});
+		floor.addVertex({x: 0, y: 0, z: -640, uvX: 0, uvY: 10});
+		floor.addVertex({x: 0, y: 0, z: -640, uvX: 0, uvY: 10});
+		floor.addVertex({x: 1280, y: 0, z: 640, uvX: 10, uvY: 0});
+		floor.addVertex({x: 1280, y: 0, z: -640, uvX: 10, uvY: 10});
 		floor.indices.push(1);
 		floor.indices.push(0);
 		floor.indices.push(2);
@@ -110,24 +78,28 @@ class PlayState extends FlxState
 		monkey.alpha = 0.5;
 		scene.add(monkey);
 
-		var sphere = new FlxPerspectiveStrip(640, 600, -600);
-		sphere.repeat = true;
-		sphere.loadGraphic(FlxGraphic.fromClass(GraphicLogo));
-		sphere.applyModelData(OBJLoader.loadFromAssets("assets/models/sphere.obj")[0]);
-		scene.add(sphere);
+		//var sphere = new FlxPerspectiveStrip(640, 600, -600);
+		//sphere.repeat = true;
+		//sphere.loadGraphic(FlxGraphic.fromClass(GraphicLogo));
+		//sphere.applyModelData(OBJLoader.loadFromAssets("assets/models/sphere.obj")[0]);
+		//scene.add(sphere);
 
 		/*
-			//example of loading a multi textured model
-			var wuhuIslandData = OBJLoader.loadFromAssets("assets/models/wuhu island/wuhuIsland.obj");
-			for (md in wuhuIslandData)
-			{
-				var piece = new FlxPerspectiveStrip(0, 5000, 0);
-				piece.repeat = true;
-				piece.loadGraphic("assets/models/wuhu island/" + md.mtl.diffuseTexture);
-				piece.applyModelData(md, true, true);
-				scene.add(piece);
-			}
-		 */
+		var totalVertCount:Int = 0;
+
+		// example of loading a multi textured model
+		var wuhuIslandData = OBJLoader.loadFromAssets("assets/models/wuhu island/wuhuIsland.obj");
+		for (md in wuhuIslandData)
+		{
+			var piece = new FlxPerspectiveStrip(0, 5000, 0);
+			piece.repeat = true;
+			piece.loadGraphic("assets/models/wuhu island/" + md.mtl.diffuseTexture);
+			piece.applyModelData(md, true, true);
+			scene.add(piece);
+			totalVertCount += piece.stripVertices.length;
+		}
+		trace(totalVertCount / 3);
+		*/
 	}
 
 	override public function update(elapsed:Float)

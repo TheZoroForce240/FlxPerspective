@@ -25,7 +25,6 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 
 	#if !flash
 	public var shader:FlxShader;
-
 	var alphas:Array<Float>;
 	var colorMultipliers:Array<Float>;
 	var colorOffsets:Array<Float>;
@@ -41,6 +40,8 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 	public var colorsPosition:Int = 0;
 
 	var bounds:FlxRect = FlxRect.get();
+
+	var culling:TriangleCulling = TriangleCulling.NONE;
 
 	public function new()
 	{
@@ -84,7 +85,7 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 		camera.canvas.graphics.beginBitmapFill(graphics.bitmap, null, true, (camera.antialiasing || antialiasing));
 		#end
 
-		camera.canvas.graphics.drawTriangles(vertices, indices, uvtData, TriangleCulling.POSITIVE);
+		camera.canvas.graphics.drawTriangles(vertices, indices, uvtData, culling);
 		camera.canvas.graphics.endFill();
 
 		#if FLX_DEBUG
@@ -136,7 +137,7 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 	}
 
 	public function addTriangles(vertices:DrawData<Float>, indices:DrawData<Int>, uvtData:DrawData<Float>, ?colors:DrawData<Int>, ?position:FlxPoint,
-			?cameraBounds:FlxRect #if !flash, ?transform:ColorTransform #end):Void
+			?cameraBounds:FlxRect #if !flash , ?transform:ColorTransform #end, ?cullingMode:TriangleCulling = TriangleCulling.NONE):Void
 	{
 		if (position == null)
 			position = point.set();
@@ -176,40 +177,43 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 			i += 2;
 		}
 
-		// if (!cameraBounds.overlaps(bounds))
-		// {
-		// this.vertices.splice(this.vertices.length - verticesLength, verticesLength);
-		// }
-		// else
-		// {
-		var uvtDataLength:Int = uvtData.length;
-		for (i in 0...uvtDataLength)
+		if (!cameraBounds.overlaps(bounds))
 		{
-			this.uvtData[prevUVTDataLength + i] = uvtData[i];
+			this.vertices.splice(this.vertices.length - verticesLength, verticesLength);
 		}
-
-		var indicesLength:Int = indices.length;
-		for (i in 0...indicesLength)
+		else
 		{
-			this.indices[prevIndicesLength + i] = indices[i] + prevNumberOfVertices;
-		}
-
-		if (colored)
-		{
-			for (i in 0...numberOfVertices)
+			var uvtDataLength:Int = uvtData.length;
+			for (i in 0...uvtDataLength)
 			{
-				this.colors[prevColorsLength + i] = colors[i];
+				this.uvtData[prevUVTDataLength + i] = uvtData[i];
 			}
 
-			colorsPosition += numberOfVertices;
-		}
+			var indicesLength:Int = indices.length;
+			for (i in 0...indicesLength)
+			{
+				this.indices[prevIndicesLength + i] = indices[i] + prevNumberOfVertices;
+			}
 
-		verticesPosition += verticesLength;
-		indicesPosition += indicesLength;
-		// }
+			if (colored)
+			{
+				for (i in 0...numberOfVertices)
+				{
+					this.colors[prevColorsLength + i] = colors[i];
+				}
+
+				colorsPosition += numberOfVertices;
+			}
+
+			verticesPosition += verticesLength;
+			indicesPosition += indicesLength;
+		}
 
 		position.putWeak();
 		cameraBounds.putWeak();
+
+
+		culling = cullingMode;
 
 		#if !flash
 		for (_ in 0...numTriangles)
@@ -229,7 +233,7 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 
 			for (_ in 0...(numTriangles * 3))
 			{
-				if (transform != null)
+				if(transform != null)
 				{
 					colorMultipliers.push(transform.redMultiplier);
 					colorMultipliers.push(transform.greenMultiplier);
@@ -245,7 +249,7 @@ class FlxDrawTrianglesItem extends FlxDrawBaseItem<FlxDrawTrianglesItem>
 					colorMultipliers.push(1);
 					colorMultipliers.push(1);
 					colorMultipliers.push(1);
-
+	
 					colorOffsets.push(0);
 					colorOffsets.push(0);
 					colorOffsets.push(0);
