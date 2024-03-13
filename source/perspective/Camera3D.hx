@@ -2,6 +2,7 @@ package perspective;
 
 import flixel.FlxG;
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
+import perspective.shaders.*;
 import openfl.geom.*;
 
 using flixel.util.FlxColorTransformUtil;

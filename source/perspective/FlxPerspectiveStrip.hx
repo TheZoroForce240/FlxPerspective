@@ -1,10 +1,9 @@
 package perspective;
 
-import flixel.math.FlxRect;
-import openfl.display.TriangleCulling;
 import flixel.FlxG;
 import flixel.graphics.tile.FlxDrawTrianglesItem.DrawData;
-import flixel.system.FlxAssets.FlxGraphicAsset;
+import perspective.models.*;
+import perspective.shaders.*;
 
 /**
  * An `FlxStrip` which allows for 3D perspective projection, which can be used for rendering 3D models with triangles.
@@ -124,8 +123,6 @@ class FlxPerspectiveStrip extends FlxPerspectiveSprite
 		super.destroy();
 	}
 
-	private static var bounds = new FlxRect(-10000, -10000, 10000, 10000);
-
 	// TODO: check this for cases when zoom is less than initial zoom...
 	override public function draw():Void
 	{
@@ -141,10 +138,8 @@ class FlxPerspectiveStrip extends FlxPerspectiveSprite
 
 			getScreenPosition(_point, camera).subtractPoint(offset);
 
-			bounds.set(-10000, -10000, 20000, 20000); //only cut off if its REALLY far away
-
 			#if !flash
-			camera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, repeat, antialiasing, colorTransform, shader, TriangleCulling.POSITIVE, bounds);
+			camera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, repeat, antialiasing, colorTransform, shader);
 			#else
 			camera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, repeat, antialiasing);
 			#end

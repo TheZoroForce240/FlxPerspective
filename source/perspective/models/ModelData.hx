@@ -1,4 +1,4 @@
-package perspective;
+package perspective.models;
 
 typedef ModelData = 
 {
