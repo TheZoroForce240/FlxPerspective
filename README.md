@@ -12,7 +12,7 @@
 * Flixel's culling system needed to be turned off for this to work! Frustum culling will hopefully be implemented at some point in the future to fix this.
 * A few edited Flixel files are be needed to correctly render 3D models with FlxPerspectiveStrip, this is to enable triangle culling and disable the camera boundary check.
 
-## Planned Features
+## Planned Features (maybe)
 * Depth testing
 * 3D Rotation on sprites/models
 * Parenting system for multi-textured 3D models instead of separate pieces
