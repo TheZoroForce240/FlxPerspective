@@ -10,6 +10,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import openfl.geom.Rectangle;
 import perspective.*;
+import perspective.models.*;
 
 class PlayState extends FlxState
 {
@@ -18,6 +19,9 @@ class PlayState extends FlxState
 	override public function create()
 	{
 		super.create();
+
+		FlxG.cameras.reset(new FlxCameraPerspective()); //required for 3D models to look right
+
 		scene = new FlxScene3D();
 		add(scene);
 
@@ -84,6 +88,7 @@ class PlayState extends FlxState
 		//sphere.applyModelData(OBJLoader.loadFromAssets("assets/models/sphere.obj")[0]);
 		//scene.add(sphere);
 
+		
 		/*
 		var totalVertCount:Int = 0;
 
